@@ -87,6 +87,8 @@ class AzureStorageFile(File):
         block_id = urllib.parse.quote_plus(block_id)
         self.file.seek(self._last_commit_pos)
         content = self.file.read(self._storage.buffer_size)
+        if not content:
+            return
         self._storage.connection.put_block(self._storage.azure_container, self._name,
                                            content, block_id)
         self._block_list.append(BlobBlock(block_id))
